@@ -1,18 +1,18 @@
 ---
 - name: Download Vector RPM
   ansible.builtin.get_url:
-    url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ >
+    url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm"
     dest: "/tmp/vector-{{ vector_version }}-1.x86_64.rpm"
     mode: '0644'
     validate_certs: false
     use_proxy: false
 - name: Copy Vector RPM into container
-  ansible.builtin.command: "docker cp /tmp/vector-{{ vector_version }}-1.x8>
+  ansible.builtin.command: "docker cp /tmp/vector-{{ vector_version }}-1.x86_64.rpm vector:/tmp/"
   changed_when: false
 - name: Install Vector package inside container
   community.docker.docker_container_exec:
     container: vector
-    command: "dnf install -y --nogpgcheck /tmp/vector-{{ vector_version }}->
+    command: "dnf install -y --nogpgcheck /tmp/vector-{{ vector_version }}-1.x86_64.rpm"
   changed_when: false
 - name: Copy Vector config into container
   ansible.builtin.command:
